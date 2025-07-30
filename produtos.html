@@ -5,71 +5,85 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CB SYSTEMS - Lançamento de Pedido</title>
   <style>
-    html, body {
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: #ffffff;
-      color: #000000;
-      touch-action: manipulation;
+      background: #f9f9f9;
+      color: #333;
       padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
     h2 {
       text-align: center;
+      margin-bottom: 20px;
     }
 
     .campo-topo {
-      max-width: 400px;
-      margin: 10px auto;
       display: flex;
       gap: 10px;
+      margin-bottom: 20px;
     }
 
     .campo-topo input {
       flex: 1;
-      padding: 10px;
+      padding: 12px;
       font-size: 16px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
     }
 
     #pesquisaProduto {
       width: 100%;
-      max-width: 400px;
       padding: 12px;
       font-size: 16px;
-      margin: 20px auto;
-      display: block;
+      margin-bottom: 20px;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
     }
 
     #resultadoPesquisa {
-      margin: 0 auto 20px;
-      max-width: 400px;
+      margin-bottom: 20px;
     }
 
     .produto-item {
       padding: 10px;
-      border-bottom: 1px solid #ccc;
-      font-size: 16px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin-bottom: 10px;
       cursor: pointer;
+      background: #f1f1f1;
+      transition: 0.2s;
     }
 
     .produto-item:hover {
-      background-color: #f0f0f0;
+      background-color: #e2f0e2;
     }
 
     .produto-item strong {
       display: block;
+      font-size: 16px;
+      margin-bottom: 5px;
     }
 
     #itensPedido {
-      max-width: 500px;
-      margin: 0 auto;
+      background: #fafafa;
       border: 1px solid #ccc;
       border-radius: 8px;
-      padding: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
     }
 
     #itensPedido h3 {
@@ -79,31 +93,34 @@
     #itensPedido ul {
       list-style: none;
       padding: 0;
+      margin: 0;
     }
 
     #itensPedido li {
-      padding: 6px 0;
+      padding: 8px 0;
       border-bottom: 1px solid #eee;
       display: flex;
       justify-content: space-between;
+      font-size: 15px;
     }
 
     #totalPedido {
       font-weight: bold;
       text-align: right;
       margin-top: 10px;
+      font-size: 16px;
     }
 
     #finalizarBtn {
-      display: block;
-      margin: 20px auto;
-      padding: 12px 24px;
+      width: 100%;
+      padding: 14px;
       font-size: 16px;
       background-color: #28a745;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      transition: background 0.3s;
     }
 
     #finalizarBtn:hover {
@@ -112,31 +129,28 @@
   </style>
 </head>
 <body>
-  <h2>Lançamento de Pedido</h2>
+  <div class="container">
+    <h2>Lançamento de Pedido</h2>
 
-  <div class="campo-topo">
-    <input type="text" id="mesa" placeholder="Mesa">
-    <input type="text" id="comanda" placeholder="Comanda">
+    <div class="campo-topo">
+      <input type="text" id="mesa" placeholder="Mesa">
+      <input type="text" id="comanda" placeholder="Comanda">
+    </div>
+
+    <input type="text" id="pesquisaProduto" placeholder="Digite o nome do produto" oninput="filtrarProdutos()">
+
+    <div id="resultadoPesquisa">
+      <p>Carregando produtos...</p>
+    </div>
+
+    <div id="itensPedido">
+      <h3>Itens do Pedido</h3>
+      <ul id="listaItens"></ul>
+      <div id="totalPedido">Total: R$ 0,00</div>
+    </div>
+
+    <button id="finalizarBtn" onclick="finalizarPedido()">Finalizar Pedido</button>
   </div>
-
-  <input
-    type="text"
-    id="pesquisaProduto"
-    placeholder="Digite o nome do produto"
-    oninput="filtrarProdutos()"
-  />
-
-  <div id="resultadoPesquisa">
-    <p>Carregando produtos...</p>
-  </div>
-
-  <div id="itensPedido">
-    <h3>Itens do Pedido</h3>
-    <ul id="listaItens"></ul>
-    <div id="totalPedido">Total: R$ 0,00</div>
-  </div>
-
-  <button id="finalizarBtn" onclick="finalizarPedido()">Finalizar Pedido</button>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXoCqr3kSNzP6U8RHPUgdVabG6qoTLGSoBF1hLMKCSCeBtHHAAkXjeMXtVJxReBADEDA/exec';
