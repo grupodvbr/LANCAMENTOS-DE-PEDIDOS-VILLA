@@ -42,11 +42,18 @@
 </head>
 <body>
   <h2>Busca de Produtos</h2>
-  <input type="text" id="pesquisaProduto" placeholder="Digite o nome do produto" oninput="filtrarProdutos()" />
-  <div id="resultadoPesquisa"></div>
+  <input
+    type="text"
+    id="pesquisaProduto"
+    placeholder="Digite o nome do produto"
+    oninput="filtrarProdutos()"
+  />
+  <div id="resultadoPesquisa">
+    <p>Carregando produtos...</p>
+  </div>
 
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXoCqr3kSNzP6U8RHPUgdVabG6qoTLGSoBF1hLMKCSCeBtHHAAkXjeMXtVJxReBADEDA/exec'; // Substitua aqui
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXoCqr3kSNzP6U8RHPUgdVabG6qoTLGSoBF1hLMKCSCeBtHHAAkXjeMXtVJxReBADEDA/exec';
 
     let produtosCadastrados = [];
 
@@ -57,10 +64,17 @@
     async function carregarProdutosDaPlanilha() {
       try {
         const response = await fetch(SCRIPT_URL);
-        produtosCadastrados = await response.json();
-        document.getElementById('resultadoPesquisa').innerHTML = '<p>Digite para buscar um produto.</p>';
+        const dados = await response.json();
+
+        if (Array.isArray(dados)) {
+          produtosCadastrados = dados;
+          document.getElementById('resultadoPesquisa').innerHTML = '<p>Digite para buscar um produto.</p>';
+        } else {
+          throw new Error('Resposta inesperada do servidor.');
+        }
       } catch (err) {
-        alert('Erro ao carregar produtos: ' + err.message);
+        document.getElementById('resultadoPesquisa').innerHTML = '<p style="color:red;">Erro ao carregar produtos.</p>';
+        console.error(err);
       }
     }
 
@@ -69,18 +83,25 @@
       const resultadoDiv = document.getElementById('resultadoPesquisa');
       resultadoDiv.innerHTML = '';
 
-      const filtrados = produtosCadastrados.filter(p => p.nome.toLowerCase().includes(termo));
+      const filtrados = produtosCadastrados.filter(p => {
+        const nome = (p.nome || '').toLowerCase();
+        return nome.includes(termo);
+      });
 
       if (filtrados.length === 0) {
         resultadoDiv.innerHTML = '<p>Nenhum produto encontrado.</p>';
-      } else {
-        filtrados.forEach(prod => {
-          const div = document.createElement('div');
-          div.className = 'produto-item';
-          div.innerHTML = `<strong>${prod.nome}</strong>Preço: R$ ${parseFloat(prod.preco).toFixed(2).replace('.', ',')}`;
-          resultadoDiv.appendChild(div);
-        });
+        return;
       }
+
+      filtrados.forEach(prod => {
+        const nome = prod.nome || 'Produto sem nome';
+        const preco = isNaN(parseFloat(prod.preco)) ? 'N/A' : `R$ ${parseFloat(prod.preco).toFixed(2).replace('.', ',')}`;
+
+        const div = document.createElement('div');
+        div.className = 'produto-item';
+        div.innerHTML = `<strong>${nome}</strong>Preço: ${preco}`;
+        resultadoDiv.appendChild(div);
+      });
     }
   </script>
 </body>
