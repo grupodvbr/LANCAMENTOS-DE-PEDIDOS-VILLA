@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CB SYSTEMS - Produtos</title>
+  <style>
+    html, body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      color: #000000;
+      touch-action: manipulation;
+      padding: 20px;
+    }
+    h2 {
+      text-align: center;
+    }
+    #pesquisaProduto {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 16px !important;
+      margin: 20px auto;
+      display: block;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    #resultadoPesquisa {
+      margin: 0 auto;
+      max-width: 400px;
+    }
+    .produto-item {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      font-size: 16px;
+    }
+    .produto-item strong {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h2>Busca de Produtos</h2>
+  <input type="text" id="pesquisaProduto" placeholder="Digite o nome do produto" oninput="filtrarProdutos()" />
+  <div id="resultadoPesquisa"></div>
+
+  <script>
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXoCqr3kSNzP6U8RHPUgdVabG6qoTLGSoBF1hLMKCSCeBtHHAAkXjeMXtVJxReBADEDA/exec'; // Substitua aqui
+
+    let produtosCadastrados = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      carregarProdutosDaPlanilha();
+    });
+
+    async function carregarProdutosDaPlanilha() {
+      try {
+        const response = await fetch(SCRIPT_URL);
+        produtosCadastrados = await response.json();
+        document.getElementById('resultadoPesquisa').innerHTML = '<p>Digite para buscar um produto.</p>';
+      } catch (err) {
+        alert('Erro ao carregar produtos: ' + err.message);
+      }
+    }
+
+    function filtrarProdutos() {
+      const termo = document.getElementById('pesquisaProduto').value.toLowerCase();
+      const resultadoDiv = document.getElementById('resultadoPesquisa');
+      resultadoDiv.innerHTML = '';
+
+      const filtrados = produtosCadastrados.filter(p => p.nome.toLowerCase().includes(termo));
+
+      if (filtrados.length === 0) {
+        resultadoDiv.innerHTML = '<p>Nenhum produto encontrado.</p>';
+      } else {
+        filtrados.forEach(prod => {
+          const div = document.createElement('div');
+          div.className = 'produto-item';
+          div.innerHTML = `<strong>${prod.nome}</strong>Preço: R$ ${parseFloat(prod.preco).toFixed(2).replace('.', ',')}`;
+          resultadoDiv.appendChild(div);
+        });
+      }
+    }
+  </script>
+</body>
+</html>
