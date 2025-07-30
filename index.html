@@ -14,11 +14,16 @@
       background-color: #003366;
       padding: 10px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 10px;
     }
     .top-bar img {
       height: 30px;
+    }
+    .top-bar h2 {
+      color: white;
+      font-size: 1.2em;
+      margin: 0 auto;
     }
     .login-container, .menu-container {
       display: none;
@@ -94,12 +99,10 @@
 <body>
   <div class="top-bar">
     <img src="https://static.wixstatic.com/media/d830b0_8cec50a98bbf4775814dbfa5386585e8~mv2.png" alt="CB SYSTEMS">
+    <h2>CB SYSTEMS</h2>
   </div>
 
   <div class="login-container active" id="login">
-    <div class="logo">
-      <h2>CB SYSTEMS</h2>
-    </div>
     <div class="input-group">
       <label for="user">Garçom</label>
       <select id="user">
@@ -127,7 +130,6 @@
       <button onclick="enter()">OK</button>
     </div>
     <button class="enter-btn" onclick="enter()">Entrar</button>
-    <p><a href="#">Esqueci minha senha</a></p>
   </div>
 
   <div class="menu-container" id="menu">
@@ -135,7 +137,6 @@
       <h2>CB SYSTEMS - MENU</h2>
     </div>
     <div class="menu-grid">
-      <button>Cadastro</button>
       <button>Comandar/Vender</button>
       <button>Operações de Caixa</button>
       <button>Venda Direta</button>
