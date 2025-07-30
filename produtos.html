@@ -11,24 +11,30 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
       color: #333;
-      padding: 20px;
+    }
+
+    header {
+      background: #343a40;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .container {
-      max-width: 600px;
-      margin: 0 auto;
+      max-width: 700px;
+      margin: 20px auto;
       background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .campo-topo {
@@ -43,15 +49,17 @@
       font-size: 16px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      background: #f9f9f9;
     }
 
     #pesquisaProduto {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       font-size: 16px;
       margin-bottom: 20px;
       border: 1px solid #ccc;
       border-radius: 8px;
+      background: #fdfdfd;
     }
 
     #resultadoPesquisa {
@@ -59,46 +67,47 @@
     }
 
     .produto-item {
-      padding: 10px;
+      padding: 12px;
       border: 1px solid #ddd;
-      border-radius: 6px;
+      border-radius: 10px;
       margin-bottom: 10px;
       cursor: pointer;
-      background: #f1f1f1;
-      transition: 0.2s;
+      background: #f8f8f8;
+      transition: background 0.2s ease;
     }
 
     .produto-item:hover {
-      background-color: #e2f0e2;
+      background-color: #dff0d8;
     }
 
     .produto-item strong {
+      font-size: 17px;
+      color: #222;
       display: block;
-      font-size: 16px;
-      margin-bottom: 5px;
+      margin-bottom: 4px;
     }
 
     #itensPedido {
-      background: #fafafa;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 15px;
-      margin-bottom: 20px;
+      border-top: 2px solid #ccc;
+      padding-top: 15px;
+      margin-top: 20px;
     }
 
     #itensPedido h3 {
-      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #333;
     }
 
-    #itensPedido ul {
+    #listaItens {
       list-style: none;
       padding: 0;
       margin: 0;
     }
 
-    #itensPedido li {
-      padding: 8px 0;
-      border-bottom: 1px solid #eee;
+    #listaItens li {
+      padding: 10px 5px;
+      border-bottom: 1px dashed #ccc;
       display: flex;
       justify-content: space-between;
       font-size: 15px;
@@ -107,37 +116,51 @@
     #totalPedido {
       font-weight: bold;
       text-align: right;
-      margin-top: 10px;
-      font-size: 16px;
+      margin-top: 12px;
+      font-size: 17px;
+      color: #007b00;
     }
 
     #finalizarBtn {
       width: 100%;
-      padding: 14px;
-      font-size: 16px;
+      padding: 16px;
+      font-size: 17px;
       background-color: #28a745;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      transition: background 0.3s;
+      margin-top: 20px;
+      font-weight: bold;
     }
 
     #finalizarBtn:hover {
       background-color: #218838;
     }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        margin: 10px;
+        padding: 20px;
+      }
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Lançamento de Pedido</h2>
+  <header>CB SYSTEMS | Lançamento de Pedido</header>
 
+  <div class="container">
     <div class="campo-topo">
-      <input type="text" id="mesa" placeholder="Mesa">
-      <input type="text" id="comanda" placeholder="Comanda">
+      <input type="text" id="mesa" placeholder="🪑 Mesa">
+      <input type="text" id="comanda" placeholder="📋 Comanda">
     </div>
 
-    <input type="text" id="pesquisaProduto" placeholder="Digite o nome do produto" oninput="filtrarProdutos()">
+    <input
+      type="text"
+      id="pesquisaProduto"
+      placeholder="🔍 Digite o nome do produto"
+      oninput="filtrarProdutos()"
+    >
 
     <div id="resultadoPesquisa">
       <p>Carregando produtos...</p>
@@ -149,7 +172,7 @@
       <div id="totalPedido">Total: R$ 0,00</div>
     </div>
 
-    <button id="finalizarBtn" onclick="finalizarPedido()">Finalizar Pedido</button>
+    <button id="finalizarBtn" onclick="finalizarPedido()">🧾 Finalizar Pedido</button>
   </div>
 
   <script>
