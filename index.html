@@ -119,9 +119,9 @@
     <div class="input-group">
       <label for="user">Garçom</label>
       <select id="user">
-        <option>GARÇOM 1</option>
-        <option>GARÇOM 2</option>
-        <option>GARÇOM EXTRA</option>
+        <option value="garcom1">GARÇOM 1</option>
+        <option value="garcom2">GARÇOM 2</option>
+        <option value="extra">GARÇOM EXTRA</option>
       </select>
     </div>
     <div class="input-group">
@@ -160,14 +160,21 @@
       <button>Pedidos Cliente</button>
     </div>
     <div class="footer">
-      VILLA GOURMET - CB SYSTEMS
+      PDV: 001 - CB SYSTEMS
       <div class="logout" onclick="logout()">Sair</div>
     </div>
   </div>
 
   <script>
+    const senhas = {
+      garcom1: '1111',
+      garcom2: '2222',
+      extra: '3333'
+    };
+
     document.addEventListener('DOMContentLoaded', () => {
-      if (localStorage.getItem('loggedIn') === 'true') {
+      const loggedUser = localStorage.getItem('loggedUser');
+      if (loggedUser) {
         document.getElementById('login').classList.remove('active');
         document.getElementById('menu').classList.add('active');
       } else {
@@ -180,21 +187,25 @@
       const pass = document.getElementById('password');
       pass.value += d;
     }
+
     function clearPass() {
       document.getElementById('password').value = '';
     }
+
     function enter() {
+      const selectedUser = document.getElementById('user').value;
       const password = document.getElementById('password').value;
-      if (password === '1234') {
-        localStorage.setItem('loggedIn', 'true');
+      if (senhas[selectedUser] === password) {
+        localStorage.setItem('loggedUser', selectedUser);
         document.getElementById('login').classList.remove('active');
         document.getElementById('menu').classList.add('active');
       } else {
         alert('Senha incorreta');
       }
     }
+
     function logout() {
-      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('loggedUser');
       document.getElementById('menu').classList.remove('active');
       document.getElementById('login').classList.add('active');
       clearPass();
