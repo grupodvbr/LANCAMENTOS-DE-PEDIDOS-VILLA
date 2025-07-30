@@ -99,6 +99,13 @@
       margin-top: 30px;
       font-size: 0.8em;
       color: #555;
+      text-align: center;
+    }
+    .logout {
+      color: red;
+      margin-top: 5px;
+      font-size: 0.9em;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -108,7 +115,7 @@
     <h2>CB SYSTEMS</h2>
   </div>
 
-  <div class="login-container active" id="login">
+  <div class="login-container" id="login">
     <div class="input-group">
       <label for="user">Garçom</label>
       <select id="user">
@@ -140,7 +147,7 @@
 
   <div class="menu-container" id="menu">
     <div class="logo">
-      <h2>MENU</h2>
+      <h2>CB SYSTEMS - MENU</h2>
     </div>
     <div class="menu-grid">
       <button>Comandar/Vender</button>
@@ -152,10 +159,23 @@
       <button>Cartões da Mesa</button>
       <button>Pedidos Cliente</button>
     </div>
-    <div class="footer">PDV: 001 - CB SYSTEMS</div>
+    <div class="footer">
+      PDV: 001 - CB SYSTEMS
+      <div class="logout" onclick="logout()">Sair</div>
+    </div>
   </div>
 
   <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (localStorage.getItem('loggedIn') === 'true') {
+        document.getElementById('login').classList.remove('active');
+        document.getElementById('menu').classList.add('active');
+      } else {
+        document.getElementById('login').classList.add('active');
+        document.getElementById('menu').classList.remove('active');
+      }
+    });
+
     function addDigit(d) {
       const pass = document.getElementById('password');
       pass.value += d;
@@ -166,11 +186,18 @@
     function enter() {
       const password = document.getElementById('password').value;
       if (password === '1234') {
+        localStorage.setItem('loggedIn', 'true');
         document.getElementById('login').classList.remove('active');
         document.getElementById('menu').classList.add('active');
       } else {
         alert('Senha incorreta');
       }
+    }
+    function logout() {
+      localStorage.removeItem('loggedIn');
+      document.getElementById('menu').classList.remove('active');
+      document.getElementById('login').classList.add('active');
+      clearPass();
     }
   </script>
 </body>
