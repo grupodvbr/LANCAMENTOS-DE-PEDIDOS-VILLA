@@ -2,129 +2,139 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - CB SYSTEMS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>CB SYSTEMS - Login</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #f1f5f9;
       margin: 0;
-      padding: 0;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+    }
+    .top-bar {
+      background-color: #003366;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-bar img {
+      height: 30px;
+    }
+    .login-container, .menu-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    .login-container.active, .menu-container.active {
+      display: flex;
     }
     .logo {
-      margin-top: 20px;
+      margin: 20px 0;
     }
-    .logo img {
-      height: 60px;
-    }
-    h1 {
-      color: #1e293b;
-      margin: 10px 0 20px;
-    }
-    .login-box {
-      background-color: #ffffff;
-      max-width: 400px;
-      margin: 20px auto;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    .input-group {
+      margin-bottom: 10px;
+      width: 100%;
+      max-width: 300px;
     }
     select, input[type="password"] {
       width: 100%;
       padding: 10px;
-      margin: 10px 0;
-      font-size: 1.1em;
+      font-size: 16px;
+      margin-top: 5px;
     }
     .keypad {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
       margin: 20px 0;
+      width: 100%;
+      max-width: 300px;
     }
     .keypad button {
+      font-size: 18px;
       padding: 15px;
-      font-size: 1.2em;
-      background-color: #1d4ed8;
+      background-color: #007bff;
       color: white;
       border: none;
       border-radius: 5px;
     }
-    .keypad button:hover {
-      background-color: #2563eb;
-    }
-    #entrar {
+    .enter-btn {
+      padding: 15px;
+      font-size: 18px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
       width: 100%;
-      padding: 15px;
-      font-size: 1.2em;
-      background-color: #10b981;
-      color: white;
-      border: none;
-      border-radius: 5px;
+      max-width: 300px;
     }
-    #entrar:hover {
-      background-color: #059669;
-    }
-    .hidden {
-      display: none;
-    }
-    .menu {
-      max-width: 600px;
-      margin: 40px auto;
+    .menu-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 100%;
+      max-width: 400px;
     }
-    .menu button {
-      background-color: #1e40af;
-      color: white;
-      border: none;
+    .menu-grid button {
       padding: 20px;
+      font-size: 16px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
       border-radius: 10px;
-      font-size: 1em;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
-    .menu button:hover {
-      background-color: #1e3a8a;
+    .footer {
+      margin-top: 30px;
+      font-size: 0.8em;
+      color: #555;
     }
   </style>
 </head>
 <body>
-  <div class="logo">
-    <img src="https://i.imgur.com/nwHdTXF.png" alt="CB SYSTEMS Logo" />
+  <div class="top-bar">
+    <img src="https://static.wixstatic.com/media/d830b0_8cec50a98bbf4775814dbfa5386585e8~mv2.png" alt="CB SYSTEMS">
   </div>
-  <h1>CB SYSTEMS</h1>
 
-  <div class="login-box" id="loginBox">
-    <select id="garcom">
-      <option value="">Selecione o Garçom</option>
-      <option value="Garçom 1">Garçom 1</option>
-      <option value="Garçom 2">Garçom 2</option>
-      <option value="Garçom 3">Garçom 3</option>
-    </select>
-
-    <input type="password" id="senha" placeholder="Digite sua senha" readonly />
-
-    <div class="keypad">
-      <button onclick="addNum('1')">1</button>
-      <button onclick="addNum('2')">2</button>
-      <button onclick="addNum('3')">3</button>
-      <button onclick="addNum('4')">4</button>
-      <button onclick="addNum('5')">5</button>
-      <button onclick="addNum('6')">6</button>
-      <button onclick="addNum('7')">7</button>
-      <button onclick="addNum('8')">8</button>
-      <button onclick="addNum('9')">9</button>
-      <button onclick="clearSenha()">Apagar</button>
-      <button onclick="addNum('0')">0</button>
-      <button onclick="entrar()">OK</button>
+  <div class="login-container active" id="login">
+    <div class="logo">
+      <h2>CB SYSTEMS</h2>
     </div>
-
-    <button id="entrar" onclick="entrar()">Entrar</button>
+    <div class="input-group">
+      <label for="user">Garçom</label>
+      <select id="user">
+        <option>GARÇOM 1</option>
+        <option>GARÇOM 2</option>
+        <option>GARÇOM EXTRA</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <label for="password">Senha</label>
+      <input type="password" id="password" readonly />
+    </div>
+    <div class="keypad">
+      <button onclick="addDigit('1')">1</button>
+      <button onclick="addDigit('2')">2</button>
+      <button onclick="addDigit('3')">3</button>
+      <button onclick="addDigit('4')">4</button>
+      <button onclick="addDigit('5')">5</button>
+      <button onclick="addDigit('6')">6</button>
+      <button onclick="addDigit('7')">7</button>
+      <button onclick="addDigit('8')">8</button>
+      <button onclick="addDigit('9')">9</button>
+      <button onclick="clearPass()">Apagar</button>
+      <button onclick="addDigit('0')">0</button>
+      <button onclick="enter()">OK</button>
+    </div>
+    <button class="enter-btn" onclick="enter()">Entrar</button>
+    <p><a href="#">Esqueci minha senha</a></p>
   </div>
 
-  <div id="menuPrincipal" class="hidden">
-    <h1>Menu CB SYSTEMS</h1>
-    <div class="menu">
+  <div class="menu-container" id="menu">
+    <div class="logo">
+      <h2>CB SYSTEMS - MENU</h2>
+    </div>
+    <div class="menu-grid">
       <button>Cadastro</button>
       <button>Comandar/Vender</button>
       <button>Operações de Caixa</button>
@@ -135,29 +145,24 @@
       <button>Cartões da Mesa</button>
       <button>Pedidos Cliente</button>
     </div>
+    <div class="footer">PDV: 001 - CB SYSTEMS</div>
   </div>
 
   <script>
-    const senhaCorreta = "1234";
-    function addNum(num) {
-      const input = document.getElementById("senha");
-      input.value += num;
+    function addDigit(d) {
+      const pass = document.getElementById('password');
+      pass.value += d;
     }
-    function clearSenha() {
-      document.getElementById("senha").value = "";
+    function clearPass() {
+      document.getElementById('password').value = '';
     }
-    function entrar() {
-      const senha = document.getElementById("senha").value;
-      const garcom = document.getElementById("garcom").value;
-      if (!garcom) {
-        alert("Selecione o garçom.");
-        return;
-      }
-      if (senha === senhaCorreta) {
-        document.getElementById("loginBox").classList.add("hidden");
-        document.getElementById("menuPrincipal").classList.remove("hidden");
+    function enter() {
+      const password = document.getElementById('password').value;
+      if (password === '1234') {
+        document.getElementById('login').classList.remove('active');
+        document.getElementById('menu').classList.add('active');
       } else {
-        alert("Senha incorreta!");
+        alert('Senha incorreta');
       }
     }
   </script>
