@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CB SYSTEMS - Produtos</title>
+  <title>CB SYSTEMS - Lançamento de Pedido</title>
   <style>
     html, body {
       margin: 0;
@@ -13,49 +13,136 @@
       touch-action: manipulation;
       padding: 20px;
     }
+
     h2 {
       text-align: center;
     }
+
+    .campo-topo {
+      max-width: 400px;
+      margin: 10px auto;
+      display: flex;
+      gap: 10px;
+    }
+
+    .campo-topo input {
+      flex: 1;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
     #pesquisaProduto {
       width: 100%;
       max-width: 400px;
       padding: 12px;
-      font-size: 16px !important;
+      font-size: 16px;
       margin: 20px auto;
       display: block;
       border: 1px solid #ccc;
       border-radius: 5px;
     }
+
     #resultadoPesquisa {
-      margin: 0 auto;
+      margin: 0 auto 20px;
       max-width: 400px;
     }
+
     .produto-item {
       padding: 10px;
       border-bottom: 1px solid #ccc;
       font-size: 16px;
+      cursor: pointer;
     }
+
+    .produto-item:hover {
+      background-color: #f0f0f0;
+    }
+
     .produto-item strong {
       display: block;
+    }
+
+    #itensPedido {
+      max-width: 500px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    #itensPedido h3 {
+      margin-top: 0;
+    }
+
+    #itensPedido ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #itensPedido li {
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    #totalPedido {
+      font-weight: bold;
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    #finalizarBtn {
+      display: block;
+      margin: 20px auto;
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #finalizarBtn:hover {
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <h2>Busca de Produtos</h2>
+  <h2>Lançamento de Pedido</h2>
+
+  <div class="campo-topo">
+    <input type="text" id="mesa" placeholder="Mesa">
+    <input type="text" id="comanda" placeholder="Comanda">
+  </div>
+
   <input
     type="text"
     id="pesquisaProduto"
     placeholder="Digite o nome do produto"
     oninput="filtrarProdutos()"
   />
+
   <div id="resultadoPesquisa">
     <p>Carregando produtos...</p>
   </div>
+
+  <div id="itensPedido">
+    <h3>Itens do Pedido</h3>
+    <ul id="listaItens"></ul>
+    <div id="totalPedido">Total: R$ 0,00</div>
+  </div>
+
+  <button id="finalizarBtn" onclick="finalizarPedido()">Finalizar Pedido</button>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXoCqr3kSNzP6U8RHPUgdVabG6qoTLGSoBF1hLMKCSCeBtHHAAkXjeMXtVJxReBADEDA/exec';
 
     let produtosCadastrados = [];
+    let itensPedido = [];
 
     document.addEventListener('DOMContentLoaded', () => {
       carregarProdutosDaPlanilha();
@@ -83,10 +170,7 @@
       const resultadoDiv = document.getElementById('resultadoPesquisa');
       resultadoDiv.innerHTML = '';
 
-      const filtrados = produtosCadastrados.filter(p => {
-        const nome = (p.nome || '').toLowerCase();
-        return nome.includes(termo);
-      });
+      const filtrados = produtosCadastrados.filter(p => (p.nome || '').toLowerCase().includes(termo));
 
       if (filtrados.length === 0) {
         resultadoDiv.innerHTML = '<p>Nenhum produto encontrado.</p>';
@@ -94,14 +178,60 @@
       }
 
       filtrados.forEach(prod => {
-        const nome = prod.nome || 'Produto sem nome';
-        const preco = isNaN(parseFloat(prod.preco)) ? 'N/A' : `R$ ${parseFloat(prod.preco).toFixed(2).replace('.', ',')}`;
+        const nome = prod.nome || 'Sem nome';
+        const preco = parseFloat(prod.preco || 0);
 
         const div = document.createElement('div');
         div.className = 'produto-item';
-        div.innerHTML = `<strong>${nome}</strong>Preço: ${preco}`;
+        div.innerHTML = `<strong>${nome}</strong>Preço: R$ ${preco.toFixed(2).replace('.', ',')}`;
+        div.onclick = () => adicionarAoPedido(nome, preco);
         resultadoDiv.appendChild(div);
       });
+    }
+
+    function adicionarAoPedido(nome, preco) {
+      itensPedido.push({ nome, preco });
+      atualizarLista();
+    }
+
+    function atualizarLista() {
+      const lista = document.getElementById('listaItens');
+      const totalDiv = document.getElementById('totalPedido');
+      lista.innerHTML = '';
+
+      let total = 0;
+
+      itensPedido.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<span>${item.nome}</span><span>R$ ${item.preco.toFixed(2).replace('.', ',')}</span>`;
+        lista.appendChild(li);
+        total += item.preco;
+      });
+
+      totalDiv.innerText = `Total: R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    function finalizarPedido() {
+      const mesa = document.getElementById('mesa').value.trim();
+      const comanda = document.getElementById('comanda').value.trim();
+
+      if (!mesa || !comanda || itensPedido.length === 0) {
+        alert('Preencha mesa, comanda e adicione ao menos 1 item.');
+        return;
+      }
+
+      const resumo = {
+        mesa,
+        comanda,
+        itens: itensPedido,
+        total: itensPedido.reduce((acc, cur) => acc + cur.preco, 0)
+      };
+
+      console.log('Pedido:', resumo);
+
+      alert('Pedido lançado com sucesso!');
+      itensPedido = [];
+      atualizarLista();
     }
   </script>
 </body>
