@@ -2,152 +2,163 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Lançamento de Pedido</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - CB SYSTEMS</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f1f1f1;
-      padding: 30px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 8px #ccc;
-    }
-    h2 {
+      background-color: #f1f5f9;
+      margin: 0;
+      padding: 0;
       text-align: center;
-      margin-bottom: 20px;
     }
-    label {
-      font-weight: bold;
-      display: block;
-      margin-top: 10px;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      box-sizing: border-box;
-    }
-    button {
+    .logo {
       margin-top: 20px;
+    }
+    .logo img {
+      height: 60px;
+    }
+    h1 {
+      color: #1e293b;
+      margin: 10px 0 20px;
+    }
+    .login-box {
+      background-color: #ffffff;
+      max-width: 400px;
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    select, input[type="password"] {
       width: 100%;
       padding: 10px;
-      font-size: 16px;
-      background-color: #2c3e50;
+      margin: 10px 0;
+      font-size: 1.1em;
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .keypad button {
+      padding: 15px;
+      font-size: 1.2em;
+      background-color: #1d4ed8;
       color: white;
       border: none;
-      border-radius: 4px;
-      cursor: pointer;
+      border-radius: 5px;
     }
-    .total {
-      text-align: right;
-      margin-top: 10px;
+    .keypad button:hover {
+      background-color: #2563eb;
+    }
+    #entrar {
+      width: 100%;
+      padding: 15px;
+      font-size: 1.2em;
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    #entrar:hover {
+      background-color: #059669;
+    }
+    .hidden {
+      display: none;
+    }
+    .menu {
+      max-width: 600px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .menu button {
+      background-color: #1e40af;
+      color: white;
+      border: none;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 1em;
+    }
+    .menu button:hover {
+      background-color: #1e3a8a;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>📝 Lançar Pedido</h2>
+  <div class="logo">
+    <img src="https://i.imgur.com/nwHdTXF.png" alt="CB SYSTEMS Logo" />
+  </div>
+  <h1>CB SYSTEMS</h1>
 
-    <label for="data">Data:</label>
-    <input type="date" id="data" />
-
-    <label for="garcom">Garçom:</label>
+  <div class="login-box" id="loginBox">
     <select id="garcom">
-      <option value="BARMAN">BARMAN</option>
-      <option value="GEANE">GEANE</option>
-      <option value="JOAO">JOAO</option>
+      <option value="">Selecione o Garçom</option>
+      <option value="Garçom 1">Garçom 1</option>
+      <option value="Garçom 2">Garçom 2</option>
+      <option value="Garçom 3">Garçom 3</option>
     </select>
 
-    <label for="mesa">Mesa:</label>
-    <input type="text" id="mesa" placeholder="Ex: 350" />
+    <input type="password" id="senha" placeholder="Digite sua senha" readonly />
 
-    <label for="produto">Produto:</label>
-    <select id="produto" onchange="atualizaValor()">
-      <option value="">Selecione...</option>
-    </select>
-
-    <label for="quantidade">Quantidade:</label>
-    <input type="number" id="quantidade" value="1" onchange="atualizaValor()" />
-
-    <label for="observacoes">Observações:</label>
-    <textarea id="observacoes" rows="3"></textarea>
-
-    <div class="total">
-      Valor Unitário: <span id="valorUnitario">R$ 0,00</span><br>
-      Total: <span id="valorTotal">R$ 0,00</span>
+    <div class="keypad">
+      <button onclick="addNum('1')">1</button>
+      <button onclick="addNum('2')">2</button>
+      <button onclick="addNum('3')">3</button>
+      <button onclick="addNum('4')">4</button>
+      <button onclick="addNum('5')">5</button>
+      <button onclick="addNum('6')">6</button>
+      <button onclick="addNum('7')">7</button>
+      <button onclick="addNum('8')">8</button>
+      <button onclick="addNum('9')">9</button>
+      <button onclick="clearSenha()">Apagar</button>
+      <button onclick="addNum('0')">0</button>
+      <button onclick="entrar()">OK</button>
     </div>
 
-    <button onclick="enviarPedido()">Registrar Pedido</button>
+    <button id="entrar" onclick="entrar()">Entrar</button>
+  </div>
+
+  <div id="menuPrincipal" class="hidden">
+    <h1>Menu CB SYSTEMS</h1>
+    <div class="menu">
+      <button>Cadastro</button>
+      <button>Comandar/Vender</button>
+      <button>Operações de Caixa</button>
+      <button>Venda Direta</button>
+      <button>Consulta Produto</button>
+      <button>Relatórios</button>
+      <button>Ver Conta</button>
+      <button>Cartões da Mesa</button>
+      <button>Pedidos Cliente</button>
+    </div>
   </div>
 
   <script>
-    const produtos = {};
-
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("data").valueAsDate = new Date();
-      fetchProdutos();
-    });
-
-    function fetchProdutos() {
-      fetch("URL_DO_SEU_SCRIPT_DO_GET?tipo=produtos")
-        .then(res => res.json())
-        .then(data => {
-          const select = document.getElementById("produto");
-          data.forEach(item => {
-            produtos[item.produto] = parseFloat(item.valor);
-            const option = document.createElement("option");
-            option.value = item.produto;
-            option.textContent = item.produto;
-            select.appendChild(option);
-          });
-        });
+    const senhaCorreta = "1234";
+    function addNum(num) {
+      const input = document.getElementById("senha");
+      input.value += num;
     }
-
-    function atualizaValor() {
-      const produto = document.getElementById("produto").value;
-      const qtd = parseInt(document.getElementById("quantidade").value || "1");
-      const unitario = produtos[produto] || 0;
-      const total = unitario * qtd;
-      document.getElementById("valorUnitario").innerText = `R$ ${unitario.toFixed(2).replace(".", ",")}`;
-      document.getElementById("valorTotal").innerText = `R$ ${total.toFixed(2).replace(".", ",")}`;
+    function clearSenha() {
+      document.getElementById("senha").value = "";
     }
-
-    function enviarPedido() {
-      const data = document.getElementById("data").value;
+    function entrar() {
+      const senha = document.getElementById("senha").value;
       const garcom = document.getElementById("garcom").value;
-      const mesa = document.getElementById("mesa").value;
-      const produto = document.getElementById("produto").value;
-      const quantidade = parseInt(document.getElementById("quantidade").value);
-      const observacoes = document.getElementById("observacoes").value;
-      const valorUnitario = produtos[produto] || 0;
-      const valorTotal = valorUnitario * quantidade;
-
-      if (!produto || !quantidade || !mesa) return alert("Preencha todos os campos obrigatórios!");
-
-      const payload = {
-        data, garcom, mesa, produto, quantidade,
-        valorUnitario, valorTotal, observacoes
-      };
-
-      fetch("URL_DO_SEU_SCRIPT_DO_POST", {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json" }
-      })
-      .then(res => res.text())
-      .then(resp => {
-        alert("Pedido registrado!");
-        document.getElementById("produto").value = "";
-        document.getElementById("quantidade").value = 1;
-        document.getElementById("observacoes").value = "";
-        atualizaValor();
-      });
+      if (!garcom) {
+        alert("Selecione o garçom.");
+        return;
+      }
+      if (senha === senhaCorreta) {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("menuPrincipal").classList.remove("hidden");
+      } else {
+        alert("Senha incorreta!");
+      }
     }
   </script>
 </body>
